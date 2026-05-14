@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CASO CONFIAR | Análisis Jurídico Independiente</title>
+<meta name="description" content="Análisis jurídico independiente sobre el presunto vínculo entre Colpensiones, la Cooperativa CONFIAR y la campaña presidencial de Iván Cepeda.">
+<meta name="theme-color" content="#0a0a0f">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+
+<!-- Open Graph -->
+<meta property="og:title" content="CASO CONFIAR | Análisis Jurídico">
+<meta property="og:description" content="¿Recursos de pensionados financiando campañas? Análisis jurídico independiente del Convenio 092 de 2025.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://casoconfiar.netlify.app">
+<meta property="og:image" content="icon-512.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=IBM+Plex+Mono:wght@400;600&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --negro: #0a0a0f;
+    --carbon: #111118;
+    --gris-oscuro: #1c1c26;
+    --gris-medio: #2e2e3e;
+    --gris-texto: #8888aa;
+    --blanco: #f0f0f8;
+    --crema: #e8e4d8;
+    --rojo: #c0392b;
+    --rojo-vivo: #e74c3c;
+    --ambar: #d4a017;
+    --ambar-claro: #f0c040;
+    --verde: #27ae60;
+    --azul: #2980b9;
+    --linea: rgba(255,255,255,0.06);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--negro);
+    color: var(--blanco);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── SPLASH ── */
+  #splash {
+    position: fixed; inset: 0;
+    background: var(--negro);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+  }
+  #splash.oculto { opacity: 0; visibility: hidden; }
+  .splash-logo {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; letter-spacing: 6px;
+    color: var(--rojo); text-transform: uppercase;
+    margin-bottom: 24px; opacity: 0;
+    animation: fadeUp 0.6s 0.3s ease forwards;
+  }
+  .splash-titulo {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 10vw, 72px);
+    font-weight: 900; line-height: 1;
+    text-align: center; letter-spacing: -2px;
+    color: var(--crema); opacity: 0;
+    animation: fadeUp 0.7s 0.6s ease forwards;
+  }
+  .splash-titulo span { color: var(--rojo); }
+  .splash-bar {
+    margin-top: 40px;
+    width: 200px; height: 2px;
+    background: var(--gris-medio);
+    overflow: hidden; opacity: 0;
+    animation: fadeUp 0.5s 1s ease forwards;
+  }
+  .splash-bar-inner {
+    height: 100%; width: 0;
+    background: var(--rojo);
+    animation: barLoad 1.2s 1.2s ease forwards;
+  }
+  @keyframes barLoad { to { width: 100%; } }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,15,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--linea);
+    padding: 12px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .header-brand {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; letter-spacing: 4px;
+    color: var(--rojo); text-transform: uppercase;
+  }
+  .header-fecha {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--gris-texto); letter-spacing: 2px;
+  }
+  .header-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; padding: 4px 10px;
+    border: 1px solid var(--rojo);
+    color: var(--rojo); letter-spacing: 2px;
+    text-transform: uppercase; border-radius: 2px;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100svh;
+    display: grid; grid-template-rows: 1fr auto;
+    padding: 60px 20px 40px;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 30%, rgba(192,57,43,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-numero {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(120px, 30vw, 280px);
+    font-weight: 900; line-height: 0.85;
+    color: rgba(192,57,43,0.08);
+    position: absolute; top: 40px; right: -20px;
+    pointer-events: none; user-select: none;
+    letter-spacing: -10px;
+  }
+  .hero-content { max-width: 700px; position: relative; z-index: 1; }
+  .hero-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: 5px;
+    color: var(--rojo); text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .hero-eyebrow::before {
+    content: ''; display: block;
+    width: 30px; height: 1px; background: var(--rojo);
+  }
+  .hero-titulo {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 7vw, 64px);
+    font-weight: 900; line-height: 1.05;
+    color: var(--crema); letter-spacing: -1px;
+    margin-bottom: 20px;
+  }
+  .hero-titulo .acento { color: var(--rojo); font-style: italic; }
+  .hero-subtitulo {
+    font-size: clamp(15px, 2.5vw, 18px);
+    color: var(--gris-texto); line-height: 1.6;
+    max-width: 560px; margin-bottom: 32px;
+  }
+  .hero-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 40px; }
+  .chip {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; padding: 5px 12px;
+    border-radius: 2px; letter-spacing: 2px;
+    text-transform: uppercase; font-weight: 600;
+  }
+  .chip-rojo  { background: rgba(192,57,43,0.15); color: var(--rojo-vivo); border: 1px solid rgba(192,57,43,0.3); }
+  .chip-ambar { background: rgba(212,160,23,0.15); color: var(--ambar-claro); border: 1px solid rgba(212,160,23,0.3); }
+  .chip-verde { background: rgba(39,174,96,0.15); color: #2ecc71; border: 1px solid rgba(39,174,96,0.3); }
+  .chip-azul  { background: rgba(41,128,185,0.15); color: #5dade2; border: 1px solid rgba(41,128,185,0.3); }
+
+  .scroll-hint {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--gris-texto); letter-spacing: 3px;
+    text-transform: uppercase;
+    animation: bounce 2s infinite;
+  }
+  .scroll-hint::after {
+    content: '↓'; font-size: 14px; color: var(--rojo);
+  }
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(4px)} }
+
+  /* ── SECCIONES ── */
+  section { padding: 60px 20px; border-top: 1px solid var(--linea); }
+  .seccion-numero {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--rojo); letter-spacing: 4px;
+    text-transform: uppercase; margin-bottom: 8px;
+  }
+  .seccion-titulo {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 5vw, 42px);
+    font-weight: 700; line-height: 1.1;
+    color: var(--crema); margin-bottom: 28px;
+    letter-spacing: -0.5px;
+  }
+  .seccion-titulo em { color: var(--rojo); font-style: italic; }
+
+  /* ── HECHOS ── */
+  .hechos-grid { display: grid; gap: 16px; }
+  .hecho-card {
+    background: var(--gris-oscuro);
+    border: 1px solid var(--linea);
+    border-left: 3px solid var(--rojo);
+    padding: 20px; border-radius: 2px;
+    position: relative; overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .hecho-card:hover { transform: translateX(4px); border-left-color: var(--rojo-vivo); }
+  .hecho-card::before {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 60px; height: 60px;
+    background: radial-gradient(circle at top right, rgba(192,57,43,0.08), transparent);
+  }
+  .hecho-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--rojo);
+    margin-bottom: 8px;
+  }
+  .hecho-titulo {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; font-weight: 700;
+    color: var(--crema); margin-bottom: 8px;
+  }
+  .hecho-texto { font-size: 14px; color: var(--gris-texto); line-height: 1.6; }
+  .hecho-monto {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 22px; font-weight: 600;
+    color: var(--ambar-claro); margin-top: 10px;
+  }
+
+  /* ── CONVENIO 092 ── */
+  .convenio-box {
+    background: linear-gradient(135deg, var(--gris-oscuro) 0%, rgba(192,57,43,0.06) 100%);
+    border: 1px solid rgba(192,57,43,0.25);
+    border-radius: 4px; padding: 28px;
+    margin-bottom: 24px; position: relative;
+  }
+  .convenio-sello {
+    position: absolute; top: 20px; right: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8px; letter-spacing: 3px;
+    color: var(--ambar); border: 1px solid var(--ambar);
+    padding: 4px 8px; text-transform: uppercase;
+    opacity: 0.8;
+  }
+  .convenio-id {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 28px; font-weight: 600;
+    color: var(--rojo); line-height: 1;
+    margin-bottom: 6px;
+  }
+  .convenio-nombre {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px; color: var(--crema);
+    margin-bottom: 16px; font-style: italic;
+  }
+  .convenio-datos { display: grid; gap: 8px; }
+  .convenio-dato {
+    display: flex; gap: 12px; align-items: baseline;
+    font-size: 13px; color: var(--gris-texto);
+  }
+  .convenio-dato strong {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--blanco);
+    letter-spacing: 1px; min-width: 100px;
+  }
+
+  /* ── ANÁLISIS JURÍDICO ── */
+  .juridico-item {
+    margin-bottom: 28px; padding-bottom: 28px;
+    border-bottom: 1px solid var(--linea);
+  }
+  .juridico-item:last-child { border-bottom: none; }
+  .juridico-ley {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: 3px;
+    color: var(--azul); text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .juridico-titulo {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-weight: 700;
+    color: var(--crema); margin-bottom: 10px;
+  }
+  .juridico-texto { font-size: 14px; color: var(--gris-texto); line-height: 1.7; }
+  .juridico-alerta {
+    margin-top: 12px; padding: 12px 16px;
+    background: rgba(192,57,43,0.08);
+    border-left: 2px solid var(--rojo);
+    font-size: 13px; color: var(--blanco); line-height: 1.6;
+  }
+
+  /* ── TABLA ESTADO ── */
+  .tabla-estado { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  .tabla-estado th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--gris-texto);
+    text-align: left; padding: 10px 12px;
+    border-bottom: 1px solid var(--linea);
+  }
+  .tabla-estado td {
+    font-size: 13px; padding: 12px;
+    border-bottom: 1px solid var(--linea);
+    color: var(--blanco); vertical-align: top;
+  }
+  .tabla-estado tr:last-child td { border-bottom: none; }
+  .tabla-estado tr:hover td { background: rgba(255,255,255,0.02); }
+  .estado-confirmado { color: #2ecc71; font-weight: 600; }
+  .estado-investigacion { color: var(--ambar-claro); font-weight: 600; }
+  .estado-no-probado { color: var(--gris-texto); }
+
+  /* ── CONCLUSIÓN ── */
+  .conclusion-box {
+    background: var(--gris-oscuro);
+    border: 1px solid var(--linea); border-radius: 4px;
+    padding: 28px; margin-bottom: 24px;
+  }
+  .conclusion-titulo {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 700; font-style: italic;
+    color: var(--crema); margin-bottom: 14px;
+  }
+  .exigencias { display: grid; gap: 10px; margin-top: 16px; }
+  .exigencia {
+    display: flex; gap: 12px; align-items: flex-start;
+    font-size: 13px; color: var(--gris-texto); line-height: 1.6;
+  }
+  .exigencia-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--rojo);
+    min-width: 24px; padding-top: 2px;
+  }
+
+  /* ── FUENTES ── */
+  .fuentes-lista { display: grid; gap: 8px; }
+  .fuente-item {
+    display: flex; gap: 12px; align-items: baseline;
+    font-size: 13px; color: var(--gris-texto);
+    padding: 8px 0; border-bottom: 1px solid var(--linea);
+  }
+  .fuente-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; color: var(--rojo);
+    min-width: 20px;
+  }
+  .fuente-nombre { color: var(--blanco); font-size: 13px; }
+  .fuente-fecha {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; color: var(--gris-texto); letter-spacing: 1px;
+    margin-left: auto; white-space: nowrap;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 32px 20px; border-top: 1px solid var(--linea);
+    text-align: center;
+  }
+  .footer-disclaimer {
+    font-size: 12px; color: var(--gris-texto);
+    max-width: 540px; margin: 0 auto 16px; line-height: 1.6;
+  }
+  .footer-credit {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: rgba(255,255,255,0.2);
+    letter-spacing: 2px; text-transform: uppercase;
+  }
+
+  /* ── BTN COMPARTIR ── */
+  .btn-compartir {
+    position: fixed; bottom: 24px; right: 20px;
+    background: var(--rojo); color: var(--blanco);
+    border: none; border-radius: 3px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: 3px;
+    text-transform: uppercase; padding: 12px 18px;
+    cursor: pointer; z-index: 200;
+    box-shadow: 0 4px 24px rgba(192,57,43,0.4);
+    transition: background 0.2s, transform 0.1s;
+  }
+  .btn-compartir:hover { background: var(--rojo-vivo); }
+  .btn-compartir:active { transform: scale(0.97); }
+
+  /* ── BARRA LATERAL DECORATIVA ── */
+  .barra-deco {
+    width: 1px; height: 80px; background: var(--rojo);
+    margin: 0 auto 0 0; opacity: 0.4;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media(min-width: 640px) {
+    .hechos-grid { grid-template-columns: 1fr 1fr; }
+    section { padding: 80px 40px; }
+    header { padding: 14px 40px; }
+    .hero { padding: 80px 40px 60px; }
+  }
+  @media(min-width: 900px) {
+    .hechos-grid { grid-template-columns: 1fr 1fr 1fr; }
+    section { padding: 80px 60px; }
+    header { padding: 14px 60px; }
+    .hero { padding: 80px 60px 60px; }
+    .tabla-estado td { font-size: 14px; }
+  }
+
+  /* ── ANIMACIONES DE ENTRADA ── */
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-logo">Vibras Positivas HM · Análisis Jurídico</div>
+  <div class="splash-titulo">CASO<br><span>CONFIAR</span></div>
+  <div class="splash-bar"><div class="splash-bar-inner"></div></div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-brand">Caso Confiar</div>
+  <div class="header-fecha" id="fecha-header">Mayo 2026</div>
+  <div class="header-tag">🔴 Urgente</div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-numero">092</div>
+  <div class="hero-content reveal">
+    <div class="hero-eyebrow">Análisis jurídico independiente</div>
+    <h1 class="hero-titulo">
+      ¿Dinero de<br>
+      <span class="acento">pensionados</span><br>
+      financiando<br>campañas?
+    </h1>
+    <p class="hero-subtitulo">
+      El Convenio 092 de 2025 entre Colpensiones y la Cooperativa CONFIAR, la financiación de $15.000 millones a la campaña de Iván Cepeda, y las investigaciones abiertas. Todo lo que necesitas saber.
+    </p>
+    <div class="hero-chips">
+      <span class="chip chip-rojo">Investigación CNE abierta</span>
+      <span class="chip chip-ambar">Convenio 092 cuestionado</span>
+      <span class="chip chip-azul">Análisis jurídico</span>
+      <span class="chip chip-verde">Hechos verificados</span>
+    </div>
+    <div class="scroll-hint">Explora el análisis</div>
+  </div>
+</section>
+
+<!-- HECHOS CONFIRMADOS -->
+<section id="hechos">
+  <div class="seccion-numero">— 01 / Hechos</div>
+  <h2 class="seccion-titulo reveal">Lo que está <em>confirmado</em></h2>
+  <div class="hechos-grid">
+    <div class="hecho-card reveal">
+      <div class="hecho-label">Financiación campaña</div>
+      <div class="hecho-titulo">Tres créditos de CONFIAR</div>
+      <div class="hecho-texto">La campaña presidencial de Iván Cepeda reportó ante el CNE ingresos financiados íntegramente mediante créditos de la Cooperativa CONFIAR, suscritos en tres desembolsos iguales.</div>
+      <div class="hecho-monto">$15.000 M</div>
+    </div>
+    <div class="hecho-card reveal" style="transition-delay:0.1s">
+      <div class="hecho-label">Convenio de Estado</div>
+      <div class="hecho-titulo">Convenio 092 de 2025</div>
+      <div class="hecho-texto">Colpensiones suscribió con CONFIAR un Convenio de Servicios Especiales Financieros bajo la modalidad de <strong>contratación directa</strong>, permitiéndole intervenir en el flujo de pago de mesadas pensionales.</div>
+      <div class="hecho-monto">33 páginas · Nov. 2025</div>
+    </div>
+    <div class="hecho-card reveal" style="transition-delay:0.2s">
+      <div class="hecho-label">Historial político</div>
+      <div class="hecho-titulo">CONFIAR y el Pacto Histórico</div>
+      <div class="hecho-texto">En 2022, CONFIAR financió la campaña presidencial de Gustavo Petro y las campañas al Congreso del partido de gobierno con montos millonarios.</div>
+      <div class="hecho-monto">~$24.576 M (2022)</div>
+    </div>
+    <div class="hecho-card reveal" style="transition-delay:0.1s; border-left-color: var(--ambar);">
+      <div class="hecho-label">Inconsistencia contable</div>
+      <div class="hecho-titulo">106 eventos, $0 reportados</div>
+      <div class="hecho-texto">El candidato declaró públicamente 106 actos multitudinarios con más de 500.000 asistentes, pero el rubro de "eventos públicos" en el reporte oficial al CNE figuró inicialmente en cero pesos.</div>
+      <div class="hecho-monto" style="color:var(--ambar-claro)">Corregido el 13/05/26</div>
+    </div>
+    <div class="hecho-card reveal" style="transition-delay:0.2s; border-left-color: var(--ambar);">
+      <div class="hecho-label">Empresa cuestionada</div>
+      <div class="hecho-titulo">Samat Publicidad S.A.S.</div>
+      <div class="hecho-texto">Empresa de Barranquilla que figura con una donación en especie de más de $609 millones para propaganda electoral, pero cuyo representante negó haber donado y afirma que solo prestó servicios de impresión.</div>
+      <div class="hecho-monto" style="color:var(--ambar-claro)">$609 M en duda</div>
+    </div>
+    <div class="hecho-card reveal" style="transition-delay:0.3s; border-left-color: var(--rojo-vivo);">
+      <div class="hecho-label">CNE actúa</div>
+      <div class="hecho-titulo">Indagación preliminar abierta</div>
+      <div class="hecho-texto">El Consejo Nacional Electoral abrió formalmente investigación contra Iván Cepeda Castro por presuntas irregularidades en la financiación de su campaña para la consulta interpartidista del 26 de octubre de 2025.</div>
+      <div class="hecho-monto" style="color:var(--rojo-vivo)">Auto No. 092 — CNE</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONVENIO 092 -->
+<section id="convenio">
+  <div class="seccion-numero">— 02 / El Convenio</div>
+  <h2 class="seccion-titulo reveal">Convenio <em>092</em> de 2025</h2>
+
+  <div class="convenio-box reveal">
+    <div class="convenio-sello">Documento oficial</div>
+    <div class="convenio-id">CONV-092/2025</div>
+    <div class="convenio-nombre">Convenio de Servicios Especiales Financieros</div>
+    <div class="convenio-datos">
+      <div class="convenio-dato">
+        <strong>Entidad Pública</strong>
+        Colpensiones — Administradora Colombiana de Pensiones
+      </div>
+      <div class="convenio-dato">
+        <strong>Rep. Colpensiones</strong>
+        Wendy Caroline Mercado Vanegas
+      </div>
+      <div class="convenio-dato">
+        <strong>Entidad Privada</strong>
+        Cooperativa Financiera CONFIAR
+      </div>
+      <div class="convenio-dato">
+        <strong>Rep. CONFIAR</strong>
+        Leandro Antonio Ceballos Valencia
+      </div>
+      <div class="convenio-dato">
+        <strong>Modalidad</strong>
+        Contratación directa (sin licitación pública)
+      </div>
+      <div class="convenio-dato">
+        <strong>Objeto</strong>
+        Intervención de CONFIAR en el pago de mesadas pensionales a jubilados colombianos
+      </div>
+      <div class="convenio-dato">
+        <strong>Alerta</strong>
+        Colpensiones no ha informado el cupo exacto de recursos que manejará CONFIAR
+      </div>
+    </div>
+  </div>
+
+  <div class="juridico-alerta reveal">
+    ⚠️ La senadora Paloma Valencia denunció que Colpensiones respondió de manera contradictoria sobre la existencia de un cupo de inversión autorizado: primero afirmó que sí existía, luego lo negó. Esta opacidad es jurídicamente inaceptable en una entidad que administra los ahorros pensionales de millones de colombianos.
+  </div>
+</section>
+
+<!-- ANÁLISIS JURÍDICO -->
+<section id="juridico">
+  <div class="seccion-numero">— 03 / Marco Jurídico</div>
+  <h2 class="seccion-titulo reveal">¿Qué normas están <em>en juego</em>?</h2>
+
+  <div class="juridico-item reveal">
+    <div class="juridico-ley">Ley 130/1994 · Ley 1475/2011</div>
+    <div class="juridico-titulo">1. Régimen de Financiación Electoral</div>
+    <div class="juridico-texto">
+      La legislación colombiana no prohíbe que una cooperativa financiera otorgue créditos a campañas políticas. Lo que exige es que los créditos sean reportados al CNE en la plataforma "Cuentas Claras", que no superen los topes legales de campaña y que no provengan de recursos públicos.
+    </div>
+    <div class="juridico-alerta">
+      🔍 El nudo jurídico está en determinar si existe una <strong>relación de causalidad</strong> entre los contratos públicos de CONFIAR con Colpensiones y el crédito otorgado a la campaña. Aunque difícil de probar, configura una sospecha legítima de <strong>conflicto de interés</strong>.
+    </div>
+  </div>
+
+  <div class="juridico-item reveal">
+    <div class="juridico-ley">Ley 80/1993 · CPACA (Ley 1437/2011)</div>
+    <div class="juridico-titulo">2. Contratación Directa y Transparencia</div>
+    <div class="juridico-texto">
+      En entidades públicas como Colpensiones, la contratación directa requiere justificación expresa y una causal legal específica establecida en el estatuto contractual. Si el convenio se firmó sin esa causal debidamente sustentada, podría configurarse una irregularidad administrativa o incluso penal (Art. 24, Ley 80 — Principio de Transparencia).
+    </div>
+    <div class="juridico-alerta">
+      ⚖️ La falta de publicidad del cupo de recursos asignado a CONFIAR viola el <strong>principio de publicidad</strong> de la contratación pública (Art. 24 Ley 80) y podría comprometer a los funcionarios firmantes ante la Procuraduría y la Contraloría.
+    </div>
+  </div>
+
+  <div class="juridico-item reveal">
+    <div class="juridico-ley">Ley 100/1993 · Circular Básica Jurídica Superfinanciera</div>
+    <div class="juridico-titulo">3. Protección de Recursos Pensionales</div>
+    <div class="juridico-texto">
+      Los recursos destinados al pago de mesadas pensionales son sagrados en el ordenamiento jurídico colombiano: son inembargables e inalienables. Si recursos pensionales se canalizan por una entidad que simultáneamente financia campañas políticas del gobierno que suscribió el convenio, podría configurarse una situación de conflicto de interés grave.
+    </div>
+    <div class="juridico-alerta">
+      🚨 CONFIAR argumentó que los créditos a campañas "no se financian con recursos de asociados ni ahorradores, sino con otros intermediarios financieros." Esta afirmación debe ser <strong>verificada independientemente</strong> por la Contraloría y la Superfinanciera.
+    </div>
+  </div>
+
+  <div class="juridico-item reveal">
+    <div class="juridico-ley">Ley 599/2000 — Código Penal · Art. 397 y ss.</div>
+    <div class="juridico-titulo">4. Posibles Tipos Penales</div>
+    <div class="juridico-texto">
+      Si se probara que los contratos se adjudicaron como retribución a la cooperativa por financiar campañas políticas, podría configurarse: <strong>celebración indebida de contratos</strong> (Art. 410 C.P.), <strong>interés indebido en contratos</strong> (Art. 409 C.P.) o incluso <strong>cohecho</strong> en modalidad impropia. La carga probatoria es alta, pero la Fiscalía tiene herramientas para investigarlo.
+    </div>
+  </div>
+
+  <div class="juridico-item reveal">
+    <div class="juridico-ley">Ley 130/1994 · Resoluciones CNE</div>
+    <div class="juridico-titulo">5. Consecuencias Electorales</div>
+    <div class="juridico-texto">
+      Las omisiones en el reporte de gastos ante el CNE, como el caso de los eventos públicos con $0 reportados pese a 106 actos multitudinarios, son sancionables. Las sanciones pueden incluir multas al partido, pérdida de personería jurídica del movimiento y, en casos extremos si se prueban dineros prohibidos, pérdida de la investidura del candidato electo.
+    </div>
+  </div>
+</section>
+
+<!-- TABLA DE ESTADO -->
+<section id="tabla">
+  <div class="seccion-numero">— 04 / Estado de los hechos</div>
+  <h2 class="seccion-titulo reveal">¿Qué está <em>probado</em> y qué no?</h2>
+  <div style="overflow-x:auto" class="reveal">
+    <table class="tabla-estado">
+      <thead>
+        <tr>
+          <th>Elemento</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Crédito de CONFIAR a campaña Cepeda ($15.000M)</td>
+          <td class="estado-confirmado">✅ Confirmado</td>
+        </tr>
+        <tr>
+          <td>Convenio 092 Colpensiones–CONFIAR firmado</td>
+          <td class="estado-confirmado">✅ Confirmado</td>
+        </tr>
+        <tr>
+          <td>Contratación directa sin justificación pública</td>
+          <td class="estado-investigacion">⚠️ En investigación</td>
+        </tr>
+        <tr>
+          <td>Cupo de recursos que manejará CONFIAR no revelado</td>
+          <td class="estado-confirmado">✅ Confirmado (Senadora Valencia)</td>
+        </tr>
+        <tr>
+          <td>Gastos en eventos no reportados inicialmente ($0 en 106 actos)</td>
+          <td class="estado-confirmado">✅ Confirmado — corregido el 13/05/26</td>
+        </tr>
+        <tr>
+          <td>Samat Publicidad: donación vs. crédito comercial</td>
+          <td class="estado-investigacion">⚠️ Contradictorio — en investigación</td>
+        </tr>
+        <tr>
+          <td>Investigación formal del CNE abierta (Auto 092)</td>
+          <td class="estado-confirmado">✅ Confirmado</td>
+        </tr>
+        <tr>
+          <td>Recursos públicos pensionales directamente en campaña</td>
+          <td class="estado-no-probado">❌ No probado aún</td>
+        </tr>
+        <tr>
+          <td>Favorecimiento contractual intencional</td>
+          <td class="estado-no-probado">❌ No probado — requiere investigación fiscal</td>
+        </tr>
+        <tr>
+          <td>Delito penal probado</td>
+          <td class="estado-no-probado">❌ No probado — en etapa de denuncia</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- CONCLUSIÓN -->
+<section id="conclusion">
+  <div class="seccion-numero">— 05 / Conclusión</div>
+  <h2 class="seccion-titulo reveal">Opinión jurídica <em>objetiva</em></h2>
+
+  <div class="conclusion-box reveal">
+    <div class="conclusion-titulo">"Individualmente legal, colectivamente cuestionable."</div>
+    <div class="juridico-texto">
+      Lo políticamente cuestionable es claro: una cooperativa que recibe contratos millonarios del Estado bajo un gobierno afín, financia la campaña del candidato de ese mismo gobierno. Aunque cada acto pueda ser individualmente legal, el conjunto configura una <strong>apariencia de conflicto de interés</strong> que en países con instituciones sólidas activaría investigaciones disciplinarias, fiscales y electorales de manera inmediata.
+    </div>
+    <br>
+    <div class="juridico-texto">
+      En Colombia, la democracia se defiende con instituciones funcionando, no solo con denuncias políticas. Lo que corresponde exigir con urgencia:
+    </div>
+    <div class="exigencias">
+      <div class="exigencia">
+        <span class="exigencia-num">01</span>
+        <span>Que la <strong>Contraloría General y la Procuraduría</strong> auditen el Convenio 092 en detalle, incluyendo el cupo exacto de recursos asignado a CONFIAR.</span>
+      </div>
+      <div class="exigencia">
+        <span class="exigencia-num">02</span>
+        <span>Que el <strong>CNE exija transparencia</strong> sobre el origen exacto de los fondos con los que CONFIAR financió los créditos de campaña.</span>
+      </div>
+      <div class="exigencia">
+        <span class="exigencia-num">03</span>
+        <span>Que <strong>Colpensiones publique</strong> de manera inmediata el cupo de recursos que maneja CONFIAR bajo el convenio.</span>
+      </div>
+      <div class="exigencia">
+        <span class="exigencia-num">04</span>
+        <span>Que la <strong>Fiscalía General</strong> evalúe si existe mérito para investigar posible favorecimiento contractual en la adjudicación del convenio.</span>
+      </div>
+      <div class="exigencia">
+        <span class="exigencia-num">05</span>
+        <span>Que la <strong>Superfinanciera</strong> verifique de manera independiente las fuentes de los recursos con los que CONFIAR otorgó los créditos políticos.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="juridico-alerta reveal">
+    ⚖️ <strong>Nota importante:</strong> Este análisis parte de hechos verificados por medios de comunicación nacionales (El Colombiano, Infobae Colombia, El País, El Nuevo Siglo) y documentos oficiales del CNE. No constituye una sentencia ni afirma la culpabilidad de ninguna persona. La presunción de inocencia aplica hasta que una autoridad judicial competente determine lo contrario.
+  </div>
+</section>
+
+<!-- FUENTES -->
+<section id="fuentes">
+  <div class="seccion-numero">— 06 / Fuentes</div>
+  <h2 class="seccion-titulo reveal">Fuentes <em>verificadas</em></h2>
+  <div class="fuentes-lista reveal">
+    <div class="fuente-item">
+      <span class="fuente-num">01</span>
+      <span class="fuente-nombre">El Colombiano — Contrato Colpensiones-CONFIAR</span>
+      <span class="fuente-fecha">Abr. 2026</span>
+    </div>
+    <div class="fuente-item">
+      <span class="fuente-num">02</span>
+      <span class="fuente-nombre">Infobae Colombia — Indagación preliminar CNE</span>
+      <span class="fuente-fecha">Abr. 30, 2026</span>
+    </div>
+    <div class="fuente-item">
+      <span class="fuente-num">03</span>
+      <span class="fuente-nombre">Infobae Colombia — Corrección reporte campaña CNE</span>
+      <span class="fuente-fecha">May. 13, 2026</span>
+    </div>
+    <div class="fuente-item">
+      <span class="fuente-num">04</span>
+      <span class="fuente-nombre">El País Cali — Reporte $15.000M ante CNE</span>
+      <span class="fuente-fecha">May. 13, 2026</span>
+    </div>
+    <div class="fuente-item">
+      <span class="fuente-num">05</span>
+      <span class="fuente-nombre">IFM Noticias — Financiación y gastos campaña Cepeda</span>
+      <span class="fuente-fecha">May. 14, 2026</span>
+    </div>
+    <div class="fuente-item">
+      <span class="fuente-num">06</span>
+      <span class="fuente-nombre">El Universal — Reporte gastos candidatos presidenciales</span>
+      <span class="fuente-fecha">May. 13, 2026</span>
+    </div>
+    <div class="fuente-item">
+      <span class="fuente-num">07</span>
+      <span class="fuente-nombre">El Nuevo Siglo — CNE investiga financiación Cepeda</span>
+      <span class="fuente-fecha">Abr. 2026</span>
+    </div>
+    <div class="fuente-item">
+      <span class="fuente-num">08</span>
+      <span class="fuente-nombre">Auto No. 092 — Consejo Nacional Electoral (CNE)</span>
+      <span class="fuente-fecha">Abr. 2026</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-disclaimer">
+    Este análisis es de carácter informativo e independiente. No representa la posición oficial de ningún partido político, entidad gubernamental o movimiento ciudadano. Está basado en información pública verificable y hechos reportados por medios de comunicación nacionales con credibilidad periodística reconocida.
+  </p>
+  <div class="footer-credit">Desarrollada por Vibras Positivas HM — Derechos de Autor Reservados</div>
+</footer>
+
+<!-- BTN COMPARTIR -->
+<button class="btn-compartir" onclick="compartirWhatsApp()">📤 Compartir</button>
+
+<script>
+// ── SPLASH ──
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('splash').classList.add('oculto');
+  }, 2600);
+});
+
+// ── FECHA DINÁMICA (Colombia UTC-5) ──
+function fechaColombia() {
+  const ahora = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' }));
+  const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  return `${ahora.getDate()} ${meses[ahora.getMonth()]} ${ahora.getFullYear()}`;
+}
+document.getElementById('fecha-header').textContent = fechaColombia();
+
+// ── REVEAL ON SCROLL ──
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── COMPARTIR WHATSAPP ──
+function compartirWhatsApp() {
+  const texto = encodeURIComponent(
+    '🚨 *CASO CONFIAR* — Análisis Jurídico Independiente\n\n' +
+    '¿Dinero de pensionados financiando campañas?\n\n' +
+    '📌 CONFIAR le prestó $15.000 millones a la campaña de Iván Cepeda\n' +
+    '📌 Colpensiones firmó el Convenio 092/2025 con CONFIAR (contratación directa)\n' +
+    '📌 El CNE abrió investigación formal (Auto 092)\n' +
+    '📌 106 eventos reportados pero $0 en gastos de actos públicos\n\n' +
+    '⚖️ Lee el análisis jurídico completo aquí 👇'
+  );
+  window.open(`https://wa.me/?text=${texto}`, '_blank');
+}
+
+// ── SERVICE WORKER ──
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+</script>
+</body>
+</html>
